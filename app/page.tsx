@@ -25,7 +25,7 @@ export default function Home() {
                 <div
                   key={index}
                   className="array-line relative w-1 mx-0.5 shadow-lg opacity-70 rounded-lg default-line-color"
-                  style={{height:`${value}px`}}
+                  style={{ height: `${value}px` }}
                 ></div>
               ))}
             </div>
