@@ -1,0 +1,1 @@
+export type SortingAlgorithmType = "BubbleSort" | "SelectionSort" | "InsertionSort" | "MergeSort" | "QuickSort"
