@@ -1,12 +1,24 @@
 "use client";
 
-import { useContext, useEffect } from "react";
 import { useSortingAlgorithmContext } from "@/context/Visualizer";
 import { Slider } from "@/components/Input/Slider";
+import { Select } from "@/components/Input/Select";
+import { algorithmOptions } from "@/lib/utils";
+import { SortingAlgorithmType } from "@/lib/types";
 
 export default function Home() {
-  const { arrayToSort, isSorting, setAnimationSpeed, animationSpeed } =
-    useSortingAlgorithmContext();
+  const {
+    arrayToSort,
+    isSorting,
+    setAnimationSpeed,
+    animationSpeed,
+    selectedAlgorithm,
+    setSelectedAlgorithm,
+  } = useSortingAlgorithmContext();
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedAlgorithm(e.target.value as SortingAlgorithmType);
+  };
 
   return (
     <main className="absolute top-0 h-screen w-screen z-[2] bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#150229_1px)] bg-[size:40px_40px]">
@@ -24,6 +36,12 @@ export default function Home() {
                 isDisabled={isSorting}
                 value={animationSpeed}
                 handleChange={(e) => setAnimationSpeed(Number(e.target.value))}
+              />
+              <Select
+                options={algorithmOptions}
+                defaltValue={selectedAlgorithm}
+                onChange={handleSelectChange}
+                isDisabled={isSorting}
               />
             </div>
           </div>
