@@ -1,7 +1,7 @@
 "use client";
 
 import { SortingAlgorithmType } from "@/lib/types";
-import { MAX_ANIMATION_SPEDD, getRandomNumberFromInterval } from "@/lib/utils";
+import { MAX_ANIMATION_SPEED, getRandomNumberFromInterval } from "@/lib/utils";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface SortingAlgorithmContextType {
@@ -33,7 +33,7 @@ export const SortingAlgorithmProvider = ({
     useState<SortingAlgorithmType>("BubbleSort");
   const [isSorting, setIsSorting] = useState<boolean>(false);
   const [animationSpeed, setAnimationSpeed] =
-    useState<number>(MAX_ANIMATION_SPEDD); // ms
+    useState<number>(MAX_ANIMATION_SPEED); // ms
   const [isAnimationComplete, seIsAnimationComplete] = useState<boolean>(false);
 
   useEffect(() => {
