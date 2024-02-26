@@ -1,9 +1,9 @@
 export type SortingAlgorithmType =
-  | "BubbleSort"
-  | "SelectionSort"
-  | "InsertionSort"
-  | "MergeSort"
-  | "QuickSort";
+  | "bubble"
+  | "insertion"
+  | "selection"
+  | "merge"
+  | "quick";
 
 export type SelectOptionType = {
   value: string;
