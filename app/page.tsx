@@ -3,7 +3,7 @@
 import { useSortingAlgorithmContext } from "@/context/Visualizer";
 import { Slider } from "@/components/Input/Slider";
 import { Select } from "@/components/Input/Select";
-import { algorithmOptions } from "@/lib/utils";
+import { algorithmOptions, generateAnimationArray } from "@/lib/utils";
 import { SortingAlgorithmType } from "@/lib/types";
 import { RxReset } from "react-icons/rx";
 import { FaPlayCircle } from "react-icons/fa";
@@ -18,6 +18,7 @@ export default function Home() {
     setSelectedAlgorithm,
     requiresReset,
     resetArrayAndAnimation,
+    runAnimation,
   } = useSortingAlgorithmContext();
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -29,7 +30,12 @@ export default function Home() {
       resetArrayAndAnimation();
       return;
     }
-    // generate Animation Array
+    generateAnimationArray(
+      selectedAlgorithm,
+      isSorting,
+      arrayToSort,
+      runAnimation
+    );
   };
 
   return (
@@ -57,7 +63,7 @@ export default function Home() {
               />
               <button
                 className="flex items-center justify-center"
-                onClick={() => {}}
+                onClick={handlePlay}
               >
                 {requiresReset ? (
                   <RxReset className="text-gray-400 h-8 w-8" />
