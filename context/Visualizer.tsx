@@ -1,6 +1,6 @@
 "use client";
 
-import { SortingAlgorithmType } from "@/lib/types";
+import { AnimationArrayType, SortingAlgorithmType } from "@/lib/types";
 import { MAX_ANIMATION_SPEED, getRandomNumberFromInterval } from "@/lib/utils";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -16,7 +16,8 @@ interface SortingAlgorithmContextType {
   isAnimationComplete: boolean;
   seIsAnimationComplete: (isComplete: boolean) => void;
   resetArrayAndAnimation: () => void;
-  runAnimation: () => void;
+  runAnimation: (animations: AnimationArrayType) => void;
+  requiresReset: boolean;
 }
 
 const SortingAlgorithmContext = createContext<
@@ -35,6 +36,8 @@ export const SortingAlgorithmProvider = ({
   const [animationSpeed, setAnimationSpeed] =
     useState<number>(MAX_ANIMATION_SPEED); // ms
   const [isAnimationComplete, seIsAnimationComplete] = useState<boolean>(false);
+
+  const requiresReset = isAnimationComplete || isSorting;
 
   useEffect(() => {
     resetArrayAndAnimation();
@@ -64,7 +67,57 @@ export const SortingAlgorithmProvider = ({
     setIsSorting(false);
   };
 
-  const runAnimation = () => {};
+  const runAnimation = (animations: AnimationArrayType) => {
+    setIsSorting(true);
+
+    const inverseSpeed = (1 / animationSpeed) * 200;
+    const arrLines = document.getElementsByClassName(
+      "array-line"
+    ) as HTMLCollectionOf<HTMLElement>;
+    const updateClassList = (
+      indexes: number[],
+      addClassName: string,
+      removeClassName: string
+    ) => {
+      indexes.forEach((index) => {
+        arrLines[index].classList.add(addClassName);
+        arrLines[index].classList.remove(removeClassName);
+      });
+    };
+
+    const updateHeightValue = (
+      lineIndex: number,
+      newHeight: number | undefined
+    ) => {
+      arrLines[lineIndex].style.height = `${newHeight}px`;
+    };
+
+    animations.forEach((animation, index) => {
+      setTimeout(() => {
+        const [lineIndexes, isSwap] = animation;
+        if (!isSwap) {
+          updateClassList(
+            lineIndexes,
+            "change-line-color",
+            "default-line-color"
+          );
+          setTimeout(
+            () =>
+              updateClassList(
+                lineIndexes,
+                "default-line-color",
+                "change-line-color"
+              ),
+            inverseSpeed
+          );
+        } else {
+          const [lineIndex, newHeight] = lineIndexes;
+          updateHeightValue(lineIndex, newHeight);
+        }
+      }, index * inverseSpeed);
+    });
+    // Rest of runAnimation function
+  };
 
   const value = {
     arrayToSort,
@@ -79,6 +132,7 @@ export const SortingAlgorithmProvider = ({
     seIsAnimationComplete,
     resetArrayAndAnimation,
     runAnimation,
+    requiresReset,
   };
 
   return (
